@@ -43,19 +43,23 @@ for block in blocks:
 		fileUrl = fileUrl.replace(".csv/preview",".csv")
 		
 		title = fileBlock.h2.contents[0]
-		# create the right strings for the new filename
-		title = title.upper().strip()
-		csvYr = title.split(' ')[-1]
-		csvYr = csvYr.replace(".","")
+		titleTest = title.find('Download CSV')
 		
-		csvMth = title.split(' ')[-2][:3]
-		csvMth = convert_mth_strings(csvMth);
-	
-		filename = entity_id + "_" + csvYr + "_" + csvMth
-	
-		todays_date = str(datetime.now())
-	
-		scraperwiki.sqlite.save(unique_keys=['l'], data={"l": fileUrl, "f": filename, "d": todays_date })
+		if titleTest == None:
+			print 'not a csv'
+		else:
+			# create the right strings for the new filename
+			title = title.upper().strip()
+			csvYr = title.split(' ')[-1]
+			csvYr = csvYr.replace(".","20")
+			
+			csvMth = title.split(' ')[-2][:3]
+			csvMth = convert_mth_strings(csvMth);
 		
-		print filename
-
+			filename = entity_id + "_" + csvYr + "_" + csvMth
+		
+			todays_date = str(datetime.now())
+		
+			scraperwiki.sqlite.save(unique_keys=['l'], data={"l": fileUrl, "f": filename, "d": todays_date })
+			
+			print filename
